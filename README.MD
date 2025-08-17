@@ -20,7 +20,7 @@ It compares a baseline with moderate augmentation against an **enhanced augmenta
 
 Here is a preview of the application interface:
 
-![Streamlit Interface](images/Interface_Screenshot.png)
+![Streamlit Interface](image_markdown/Interface_Screenshot.png)
 
 You can run the app locally (instructions below) to test dog breed predictions and Grad-CAM
 
