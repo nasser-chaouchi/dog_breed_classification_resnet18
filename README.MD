@@ -24,7 +24,7 @@ Here is a preview of the application interface:
 
 You can run the app locally (instructions below) to test dog breed predictions and Grad-CAM
 
-You can access the live application [here](https://twittersentimentanalysis-cfhbucvitpghzvnwxt38vi.streamlit.app/).
+You can access the live application [here](https://dogbreedclassificationresnet18.streamlit.app/).
 
 
 ---
