@@ -59,7 +59,6 @@ EVAL_TRANSFORM = transforms.Compose([
 
 
 class GradCAM:
-    """Minimal Grad-CAM for ResNet18 (last block of layer4)."""
     def __init__(self, model: torch.nn.Module, target_layer: torch.nn.Module):
         self.model = model
         self.target_layer = target_layer
@@ -97,7 +96,6 @@ class GradCAM:
         return cam  # (H, W) in [0,1]
 
 def cam_to_pil_overlay(cam: torch.Tensor, pil_img: Image.Image, alpha: float = 0.45) -> Image.Image:
-    """Upsample CAM to image size and overlay as heatmap."""
     import matplotlib.cm as cm
     w, h = pil_img.size
     cam_up = torch.nn.functional.interpolate(
@@ -168,7 +166,7 @@ def load_model(weights_path: str, num_classes: int, device: torch.device) -> tor
         st.error(f"Model weights not found at: {weights_path}")
         st.stop()
     state = torch.load(weights_path, map_location=device)
-    # Support plain state_dict or wrapped dict
+
     if isinstance(state, dict) and all(k.split('.')[0] in {"fc","layer1","layer2","layer3","layer4","conv1","bn1"} for k in state.keys()):
         model.load_state_dict(state)
     elif isinstance(state, dict) and "state_dict" in state:
@@ -192,7 +190,6 @@ def predict(model: torch.nn.Module, x: torch.Tensor, device: torch.device, k: in
     return top_idx[0].cpu().numpy(), top_probs[0].cpu().numpy()
 
 def pretty_class(name: str) -> str:
-    """Display-friendly class name: underscores -> spaces, Title Case; hyphens kept."""
     return name.replace("_", " ").title()
 
 def probs_table(indices: np.ndarray, probs: np.ndarray, class_names: List[str]) -> pd.DataFrame:
@@ -245,10 +242,10 @@ SUPPORTED_BREEDS = [pretty_class(n) for n in class_names]
 st.markdown(
     '<div class="card"><div class="card-title">Supported Dog Breeds</div>'
     '<div class="subtle small">'
-    'This model has been trained to recognize **only** the dog breeds listed below. '
-    'It guarantees reliable predictions only if you upload an image containing **a single dog** '
+    'This model has been trained to recognize only the dog breeds listed below. '
+    'It guarantees reliable predictions only if you upload an image containing a single dog '
     'belonging to one of these breeds. '
-    'For any other species, unlisted breeds, mixed breeds, or complex images, '
+    'For mixed breeds or complex images, '
     'the predictions may be inaccurate.'
     '</div><br>',
     unsafe_allow_html=True
